@@ -24,6 +24,7 @@ abstract class DataHandler {
   MetricDescriptor? caloriesPerHourMetric;
   MetricDescriptor? caloriesPerMinuteMetric;
   MetricDescriptor? resistanceMetric;
+  MetricDescriptor? inclinationMetric;
   MetricDescriptor? strokeCountMetric;
 
   DataHandler({
@@ -38,6 +39,7 @@ abstract class DataHandler {
     this.cadenceMetric,
     this.distanceMetric,
     this.resistanceMetric,
+    this.inclinationMetric,
     this.strokeCountMetric,
   });
 
@@ -135,6 +137,10 @@ abstract class DataHandler {
     return resistanceMetric?.getMeasurementValue(data);
   }
 
+  double? getInclination(List<int> data) {
+    return inclinationMetric?.getMeasurementValue(data);
+  }
+
   double? getStrokeCount(List<int> data) {
     return strokeCountMetric?.getMeasurementValue(data);
   }
@@ -159,6 +165,7 @@ abstract class DataHandler {
     caloriesPerHourMetric = null;
     caloriesPerMinuteMetric = null;
     resistanceMetric = null;
+    inclinationMetric = null;
     strokeCountMetric = null;
   }
 }

@@ -52,7 +52,7 @@ class CrossTrainerDeviceDescriptor extends FitnessMachineDescriptor {
     flag = processStepMetricsFlag(flag);
     flag = processStrideCountFlag(flag, divider: 10.0);
     flag = skipFlag(flag, size: 4); // Positive and Negative Elevation Gain
-    flag = skipFlag(flag, size: 4); // Inclination and Ramp Angle
+    flag = processInclinationFlag(flag);
     flag = processResistanceFlag(flag, divider: 10.0);
     flag = processPowerFlag(flag);
     flag = skipFlag(flag); // Average Power
@@ -81,6 +81,7 @@ class CrossTrainerDeviceDescriptor extends FitnessMachineDescriptor {
       caloriesPerHour: getCaloriesPerHour(data),
       caloriesPerMinute: getCaloriesPerMinute(data),
       resistance: getResistance(data)?.toInt(),
+      inclination: getInclination(data),
       preciseCadence: cadence,
       strokeCount: getStrokeCount(data),
     );

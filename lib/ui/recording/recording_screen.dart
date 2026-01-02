@@ -51,6 +51,7 @@ import '../../preferences/metric_spec.dart';
 import '../../preferences/palette_spec.dart';
 import '../../preferences/show_pacer.dart';
 import '../../preferences/show_resistance_level.dart';
+import '../../preferences/show_inclination.dart';
 import '../../preferences/show_strokes_strides_revs.dart';
 import '../../preferences/simpler_ui.dart';
 import '../../preferences/sound_effects.dart';
@@ -148,7 +149,9 @@ class RecordingState extends State<RecordingScreen> {
   static const int _distanceNIndex = _distance0Index - 1;
   // Extra optional measurements
   static const int _resistanceIndex = 0;
-  static const int _strokeCountIndex = 1;
+  static const int _inclinationIndex = 1;
+  static const int _strokeCountIndex = 2;
+  static const int _optionalCount = 3;
 
   late Size size = const Size(0, 0);
   FitnessEquipment? _fitnessEquipment;
@@ -241,6 +244,7 @@ class RecordingState extends State<RecordingScreen> {
   bool _heartRateMonitorWorkout = heartRateMonitorWorkoutDefault;
   bool _hrBasedCalorieCounting = useHeartRateBasedCalorieCountingDefault;
   bool _showResistanceLevel = showResistanceLevelDefault;
+  bool _showInclination = showInclinationDefault;
   bool _showStrokesStridesRevs = showStrokesStridesRevsDefault;
   bool _leaderboardFeature = leaderboardFeatureDefault;
   bool _rankingForSportOrDevice = rankingForSportOrDeviceDefault;
@@ -718,6 +722,10 @@ class RecordingState extends State<RecordingScreen> {
     _onToggleDetails(_resistanceIndex, true);
   }
 
+  void _onToggleInclination() {
+    _onToggleDetails(_inclinationIndex, true);
+  }
+
   void _onChartTouchInteractionDown(int index, Offset position, bool extra) {
     _chartTouchInteractionDownTime = DateTime.now();
     _chartTouchInteractionPosition = position;
@@ -936,6 +944,7 @@ class RecordingState extends State<RecordingScreen> {
         prefService.get<bool>(heartRateMonitorWorkoutTag) ?? heartRateMonitorWorkoutDefault;
     _showResistanceLevel =
         prefService.get<bool>(showResistanceLevelTag) ?? showResistanceLevelDefault;
+    _showInclination = prefService.get<bool>(showInclinationTag) ?? showInclinationDefault;
     _showStrokesStridesRevs =
         prefService.get<bool>(showStrokesStridesRevsTag) ?? showStrokesStridesRevsDefault;
     _graphViewDuration = prefService.get<double>(graphViewDurationTag) ?? graphViewDurationDefault;

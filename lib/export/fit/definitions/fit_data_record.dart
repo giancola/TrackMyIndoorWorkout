@@ -1,5 +1,6 @@
 import '../../../preferences/heart_rate_gap_workaround.dart';
 import '../../../preferences/heart_rate_limiting.dart';
+import '../../../utils/constants.dart';
 import '../../export_record.dart';
 import '../fit_base_type.dart';
 import '../fit_data.dart';
@@ -42,7 +43,10 @@ class FitDataRecord extends FitDefinitionMessage {
       FitField(5, FitBaseTypes.uint32Type), // Distance (1/100 m)
       FitField(6, FitBaseTypes.uint16Type), // Speed (1/1000 m/s)
       FitField(7, FitBaseTypes.uint16Type), // Power (Watts)
+      FitField(10, FitBaseTypes.uint8Type), // Resistance (native FIT field)
+      FitField(33, FitBaseTypes.uint16Type), // Calories (kCal)
       FitField(32, FitBaseTypes.sint16Type), // Vertical Speed (1/1000 m/s)
+      FitField(28, FitBaseTypes.sint16Type), // Grade / Inclination (1/100 %)
     ]);
   }
 
@@ -81,7 +85,26 @@ class FitDataRecord extends FitDefinitionMessage {
     data.addLong(((model.record.distance ?? 0.0) * 100).round());
     data.addShort(((model.record.speed ?? 0.0) * 1000).round());
     data.addShort(model.record.power?.round() ?? 0);
+
+    // Resistance: only meaningful for certain sports.
+    int resistanceByte = FitBaseTypes.uint8Type.invalidValue; // 255
+    final rs = model.record.resistance;
+    if (rs != null && rs > 0) {
+      // clamp to valid uint8 (0..254)
+      resistanceByte = rs.clamp(0, FitBaseTypes.uint8Type.maxValue);
+    }
+    data.addByte(resistanceByte);
+
+    data.addShort(model.record.calories);
+
     data.addShort(0, signed: true);
+
+    int inclinationShort = FitBaseTypes.sint16Type.invalidValue;
+    final inc = model.record.inclination;
+    if (inc != null) {
+      inclinationShort = (inc * 100).round();
+    }
+    data.addShort(inclinationShort, signed: true);
 
     return data.output;
   }

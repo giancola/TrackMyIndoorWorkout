@@ -24,8 +24,9 @@ const RecordSchema = CollectionSchema(
     r'elapsed': PropertySchema(id: 4, name: r'elapsed', type: IsarType.long),
     r'heartRate': PropertySchema(id: 5, name: r'heartRate', type: IsarType.long),
     r'power': PropertySchema(id: 6, name: r'power', type: IsarType.long),
-    r'speed': PropertySchema(id: 7, name: r'speed', type: IsarType.double),
-    r'timeStamp': PropertySchema(id: 8, name: r'timeStamp', type: IsarType.dateTime),
+    r'resistance': PropertySchema(id: 7, name: r'resistance', type: IsarType.long),
+    r'speed': PropertySchema(id: 8, name: r'speed', type: IsarType.double),
+    r'timeStamp': PropertySchema(id: 9, name: r'timeStamp', type: IsarType.dateTime),
   },
 
   estimateSize: _recordEstimateSize,
@@ -71,8 +72,9 @@ void _recordSerialize(
   writer.writeLong(offsets[4], object.elapsed);
   writer.writeLong(offsets[5], object.heartRate);
   writer.writeLong(offsets[6], object.power);
-  writer.writeDouble(offsets[7], object.speed);
-  writer.writeDateTime(offsets[8], object.timeStamp);
+  writer.writeLong(offsets[7], object.resistance);
+  writer.writeDouble(offsets[8], object.speed);
+  writer.writeDateTime(offsets[9], object.timeStamp);
 }
 
 Record _recordDeserialize(
@@ -90,8 +92,9 @@ Record _recordDeserialize(
     heartRate: reader.readLongOrNull(offsets[5]),
     id: id,
     power: reader.readLongOrNull(offsets[6]),
-    speed: reader.readDoubleOrNull(offsets[7]),
-    timeStamp: reader.readDateTimeOrNull(offsets[8]),
+    resistance: reader.readLongOrNull(offsets[7]),
+    speed: reader.readDoubleOrNull(offsets[8]),
+    timeStamp: reader.readDateTimeOrNull(offsets[9]),
   );
   return object;
 }
@@ -118,8 +121,10 @@ P _recordDeserializeProp<P>(
     case 6:
       return (reader.readLongOrNull(offset)) as P;
     case 7:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 8:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 9:
       return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1277,6 +1282,12 @@ extension RecordQueryProperty on QueryBuilder<Record, Record, QQueryProperty> {
   QueryBuilder<Record, int?, QQueryOperations> powerProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'power');
+    });
+  }
+
+  QueryBuilder<Record, int?, QQueryOperations> resistanceProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'resistance');
     });
   }
 

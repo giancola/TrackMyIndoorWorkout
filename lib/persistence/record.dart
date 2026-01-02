@@ -38,8 +38,8 @@ class Record {
   double? caloriesPerMinute;
   @ignore
   int movingTime = 0; // ms
-  @ignore
   int? resistance;
+  double? inclination;
   @ignore
   double? preciseCadence;
   @ignore
@@ -62,6 +62,7 @@ class Record {
     this.caloriesPerHour,
     this.caloriesPerMinute,
     this.resistance,
+    this.inclination,
     this.preciseCadence,
     this.strokeCount,
   }) {

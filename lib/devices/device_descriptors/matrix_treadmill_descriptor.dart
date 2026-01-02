@@ -47,7 +47,7 @@ class MatrixTreadmillDescriptor extends TreadmillDeviceDescriptor {
     flag = processSpeedFlag(flag);
     flag = skipFlag(flag); // Average Speed
     flag = processTotalDistanceFlag(flag);
-    flag = skipFlag(flag, size: 4); // Inclination and Ramp Angle
+    flag = processInclinationFlag(flag);
     flag = skipFlag(flag, size: 4); // Positive and Negative Elevation Gain
     flag = advanceFlag(flag); // Instantaneous Pace
     flag = advanceFlag(flag); // Average Pace

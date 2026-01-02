@@ -111,6 +111,23 @@ abstract class FitnessMachineDescriptor extends DeviceDescriptor {
     return advanceFlag(flag);
   }
 
+  int processInclinationFlag(int flag, {divider = 10.0}) {
+    if (flag % 2 == 1) {
+      // SInt16, percent
+      inclinationMetric = ShortMetricDescriptor(
+        lsb: byteCounter,
+        msb: byteCounter + 1,
+        divider: divider,
+      );
+      byteCounter += 2;
+
+      // SInt16, Ramp Angle, degrees
+      byteCounter += 2;
+    }
+
+    return advanceFlag(flag);
+  }
+
   int processPowerFlag(int flag) {
     if (flag % 2 == 1) {
       // SInt16, Watts
